@@ -57,6 +57,12 @@
 		5784E661E9B68A609DB300EA /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B3F4ACC6908133E9AA865 /* TodayView.swift */; };
 		88B9EC4393C32CBCB7BC5FD6 /* WorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520138CF684F7B2FD72835B9 /* WorkView.swift */; };
 		01912F861D9FF6C49BFFB86E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AB4DFC38D162971DBF93E97 /* Assets.xcassets */; };
+		AA10000000000000000001A1 /* PlusJakartaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA20000000000000000001A1 /* PlusJakartaSans-Bold.ttf */; };
+		AA10000000000000000002A1 /* PlusJakartaSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA20000000000000000002A1 /* PlusJakartaSans-SemiBold.ttf */; };
+		AA10000000000000000003A1 /* PlusJakartaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA20000000000000000003A1 /* PlusJakartaSans-Medium.ttf */; };
+		AA10000000000000000004A1 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA20000000000000000004A1 /* Inter-Regular.ttf */; };
+		AA10000000000000000005A1 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA20000000000000000005A1 /* Inter-Medium.ttf */; };
+		AA10000000000000000006A1 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA20000000000000000006A1 /* Inter-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +118,12 @@
 		491B743B0BC2AB96968D2C88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AB4DFC38D162971DBF93E97 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		012552FEA2D73CD1521B7DF8 /* EmpowerHumanityAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EmpowerHumanityAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA20000000000000000001A1 /* PlusJakartaSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Bold.ttf"; sourceTree = "<group>"; };
+		AA20000000000000000002A1 /* PlusJakartaSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		AA20000000000000000003A1 /* PlusJakartaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Medium.ttf"; sourceTree = "<group>"; };
+		AA20000000000000000004A1 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
+		AA20000000000000000005A1 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
+		AA20000000000000000006A1 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,11 +145,35 @@
 				000A081D4C5B5D8AF980156D /* Data */,
 				8031C5EBA706E76D8D0AFF72 /* DesignSystem */,
 				5D62E5AC512F621D7823ED82 /* Features */,
+				AA30000000000000000001A1 /* Resources */,
 				6AB4DFC38D162971DBF93E97 /* Assets.xcassets */,
 				491B743B0BC2AB96968D2C88 /* Info.plist */,
 				46F2D67400378FE433ED81E4 /* Products */,
 			);
 			path = "EmpowerHumanityAI";
+			sourceTree = "<group>";
+		};
+		AA30000000000000000001A1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AA30000000000000000002A1 /* Fonts */,
+			);
+			name = "Resources";
+			path = "Resources";
+			sourceTree = "<group>";
+		};
+		AA30000000000000000002A1 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				AA20000000000000000001A1 /* PlusJakartaSans-Bold.ttf */,
+				AA20000000000000000002A1 /* PlusJakartaSans-SemiBold.ttf */,
+				AA20000000000000000003A1 /* PlusJakartaSans-Medium.ttf */,
+				AA20000000000000000004A1 /* Inter-Regular.ttf */,
+				AA20000000000000000005A1 /* Inter-Medium.ttf */,
+				AA20000000000000000006A1 /* Inter-SemiBold.ttf */,
+			);
+			name = "Fonts";
+			path = "Fonts";
 			sourceTree = "<group>";
 		};
 		46F2D67400378FE433ED81E4 /* Products */ = {
@@ -549,6 +585,12 @@
             buildActionMask = 2147483647;
             files = (
                 01912F861D9FF6C49BFFB86E /* Assets.xcassets in Resources */,
+				AA10000000000000000001A1 /* PlusJakartaSans-Bold.ttf in Resources */,
+				AA10000000000000000002A1 /* PlusJakartaSans-SemiBold.ttf in Resources */,
+				AA10000000000000000003A1 /* PlusJakartaSans-Medium.ttf in Resources */,
+				AA10000000000000000004A1 /* Inter-Regular.ttf in Resources */,
+				AA10000000000000000005A1 /* Inter-Medium.ttf in Resources */,
+				AA10000000000000000006A1 /* Inter-SemiBold.ttf in Resources */,
             );
             runOnlyForDeploymentPostprocessing = 0;
         };

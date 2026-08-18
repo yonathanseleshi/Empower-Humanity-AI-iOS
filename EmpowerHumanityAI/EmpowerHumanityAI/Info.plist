@@ -33,6 +33,15 @@
         <key>UISceneConfigurations</key>
         <dict/>
     </dict>
+    <key>UIAppFonts</key>
+    <array>
+        <string>PlusJakartaSans-Bold.ttf</string>
+        <string>PlusJakartaSans-SemiBold.ttf</string>
+        <string>PlusJakartaSans-Medium.ttf</string>
+        <string>Inter-Regular.ttf</string>
+        <string>Inter-Medium.ttf</string>
+        <string>Inter-SemiBold.ttf</string>
+    </array>
     <key>UILaunchScreen</key>
     <dict/>
     <key>UIRequiredDeviceCapabilities</key>
