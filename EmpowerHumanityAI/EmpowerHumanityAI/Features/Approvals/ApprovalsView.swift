@@ -145,7 +145,7 @@ struct ApprovalDetailView: View {
                                 dismiss()
                             }
                         }
-                        EHSecondaryButton("Deny") {
+                        EHSecondaryButton(title: "Deny") {
                             Task {
                                 await vm.resolve(approval: approval, status: .denied)
                                 dismiss()

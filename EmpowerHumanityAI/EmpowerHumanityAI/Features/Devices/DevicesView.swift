@@ -87,7 +87,7 @@ struct DevicesView: View {
             }
         }
         .padding(EHSpacing.cardPadding)
-        .ehCard(device.status == .working ? 2 : 1)
+        .ehCard(level: device.status == .working ? 2 : 1)
     }
 
     private func statusColor(_ status: DeviceStatus) -> Color {

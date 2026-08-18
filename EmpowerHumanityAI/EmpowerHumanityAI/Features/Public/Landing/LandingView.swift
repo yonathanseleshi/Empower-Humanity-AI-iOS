@@ -144,7 +144,7 @@ struct LandingView: View {
             EHPrimaryButton("Create Account") {
                 navigateToSignup = true
             }
-            EHSecondaryButton("Sign In") {
+            EHSecondaryButton(title: "Sign In") {
                 navigateToLogin = true
             }
 

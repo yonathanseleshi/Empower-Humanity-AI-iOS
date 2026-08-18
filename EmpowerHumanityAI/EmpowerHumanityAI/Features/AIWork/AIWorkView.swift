@@ -92,7 +92,7 @@ struct AIWorkView: View {
                 .foregroundStyle(EHColors.Text.subtle)
         }
         .padding(EHSpacing.cardPadding)
-        .ehCard(item.status == .waitingForApproval ? 2 : 1)
+        .ehCard(level: item.status == .waitingForApproval ? 2 : 1)
         .overlay(
             item.status == .waitingForApproval ?
             RoundedRectangle(cornerRadius: EHRadius.lg)
