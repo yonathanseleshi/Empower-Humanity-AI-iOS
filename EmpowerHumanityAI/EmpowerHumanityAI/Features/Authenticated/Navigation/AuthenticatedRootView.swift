@@ -2,11 +2,16 @@ import SwiftUI
 
 // MARK: - AuthenticatedRootView
 // Compact (iPhone): overlay drawer using ZStack + offset animation + dimmed backdrop.
-// Regular (iPad): NavigationSplitView with persistent sidebar.
+// Regular (iPad):   NavigationSplitView with persistent sidebar.
+//
+// Deep-link / notification routing:
+//   Call navigate(to:) with a DetailDestination to push a detail view.
+//   The nav section switches automatically via selectedDestination.
 
 struct AuthenticatedRootView: View {
     @Environment(AppState.self) private var appState
     @State private var selectedDestination: NavDestination = .today
+    @State private var navigationPath = NavigationPath()
     @State private var isDrawerOpen: Bool = false
     @Environment(\.horizontalSizeClass) private var sizeClass
 
@@ -22,8 +27,8 @@ struct AuthenticatedRootView: View {
 
     private var compactLayout: some View {
         ZStack(alignment: .leading) {
-            // Main content
-            NavigationStack {
+            // Main content with detail-route support
+            NavigationStack(path: $navigationPath) {
                 destinationView(selectedDestination)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -34,6 +39,9 @@ struct AuthenticatedRootView: View {
                             orbButton
                         }
                     }
+                    .navigationDestination(for: DetailDestination.self) { destination in
+                        detailView(destination)
+                    }
             }
             .disabled(isDrawerOpen)
 
@@ -41,9 +49,7 @@ struct AuthenticatedRootView: View {
             if isDrawerOpen {
                 Color.black.opacity(0.35)
                     .ignoresSafeArea()
-                    .onTapGesture {
-                        closeDrawer()
-                    }
+                    .onTapGesture { closeDrawer() }
                     .transition(.opacity)
                     .zIndex(1)
             }
@@ -55,6 +61,11 @@ struct AuthenticatedRootView: View {
                 .animation(.easeInOut(duration: 0.28), value: isDrawerOpen)
                 .ignoresSafeArea()
                 .zIndex(2)
+                .onChange(of: selectedDestination) { _, _ in
+                    // Reset detail stack when switching top-level sections
+                    navigationPath = NavigationPath()
+                    closeDrawer()
+                }
         }
     }
 
@@ -65,7 +76,7 @@ struct AuthenticatedRootView: View {
             SideMenuView(selectedDestination: $selectedDestination, isPresented: .constant(true))
                 .navigationSplitViewColumnWidth(min: 240, ideal: 264, max: 300)
         } detail: {
-            NavigationStack {
+            NavigationStack(path: $navigationPath) {
                 destinationView(selectedDestination)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -73,6 +84,12 @@ struct AuthenticatedRootView: View {
                             orbButton
                         }
                     }
+                    .navigationDestination(for: DetailDestination.self) { destination in
+                        detailView(destination)
+                    }
+            }
+            .onChange(of: selectedDestination) { _, _ in
+                navigationPath = NavigationPath()
             }
         }
     }
@@ -93,23 +110,81 @@ struct AuthenticatedRootView: View {
         CoIntelligenceOrb(state: appState.orbState, size: 30)
     }
 
-    // MARK: - Destination Router
+    // MARK: - Top-Level Destination Router
 
     @ViewBuilder
     private func destinationView(_ destination: NavDestination) -> some View {
         switch destination {
-        case .today:       TodayView()
-        case .chat:        ChatView()
-        case .work:        WorkView()
-        case .goals:       GoalsView()
-        case .knowledge:   KnowledgeView()
-        case .activity:    ActivityView()
-        case .aiWork:      AIWorkView()
-        case .approvals:   ApprovalsView()
-        case .devices:     DevicesView()
+        case .today:         TodayView()
+        case .chat:          ChatView()
+        case .work:          WorkView()
+        case .goals:         GoalsView()
+        case .knowledge:     KnowledgeView()
+        case .activity:      ActivityView()
+        case .aiWork:        AIWorkView()
+        case .approvals:     ApprovalsView()
+        case .devices:       DevicesView()
         case .notifications: NotificationsView()
-        case .integrations: IntegrationsView()
-        case .settings:    SettingsView()
+        case .integrations:  IntegrationsView()
+        case .settings:      SettingsView()
+        }
+    }
+
+    // MARK: - Detail View Router
+    // Handles typed NavigationPath pushes (deep links, notification taps).
+    // Extend each case when the corresponding detail screen is built.
+
+    @ViewBuilder
+    private func detailView(_ destination: DetailDestination) -> some View {
+        switch destination {
+        case .approval(let id):
+            // TODO: replace placeholder with ApprovalDetailView(id: id) when built
+            placeholderDetail(title: "Approval", id: id)
+        case .aiWork(let id):
+            placeholderDetail(title: "AI Work", id: id)
+        case .goal(let id):
+            placeholderDetail(title: "Goal", id: id)
+        case .task(let id):
+            placeholderDetail(title: "Task", id: id)
+        case .project(let id):
+            placeholderDetail(title: "Project", id: id)
+        case .conversation(let id):
+            placeholderDetail(title: "Conversation", id: id)
+        case .device(let id):
+            placeholderDetail(title: "Device", id: id)
+        case .artifact(let id):
+            placeholderDetail(title: "Artifact", id: id)
+        }
+    }
+
+    private func placeholderDetail(title: String, id: UUID) -> some View {
+        VStack(spacing: EHSpacing.md) {
+            EHIconContainer(systemName: "arrow.forward.circle", color: EHColors.trustBlue, size: 52)
+            Text(title)
+                .font(EHTypography.h3)
+                .foregroundStyle(EHColors.Text.primary)
+            Text(id.uuidString)
+                .font(EHTypography.caption)
+                .foregroundStyle(EHColors.Text.subtle)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(EHColors.page)
+        .navigationTitle(title)
+    }
+
+    // MARK: - Deep-Link / Notification Navigation
+    // Call this to navigate to a specific detail from a push notification or activity tap.
+
+    func navigate(deepLink: DeepLink) {
+        let (navDest, detail) = DetailDestination.from(deepLink: deepLink)
+        selectedDestination = navDest
+        navigationPath = NavigationPath()
+        if let detail {
+            // Small delay so the section switch settles before pushing
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                navigationPath.append(detail)
+            }
         }
     }
 

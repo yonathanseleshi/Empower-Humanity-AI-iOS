@@ -4,49 +4,36 @@ struct LandingView: View {
     @Environment(AppState.self) private var appState
     @State private var navigateToLogin = false
     @State private var navigateToSignup = false
-    @State private var navigateToDemo = false
     @State private var orbState: OrbState = .available
+    @State private var isDemoLoading = false
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    // MARK: Hero
-                    heroSection
+        ScrollView {
+            VStack(spacing: 0) {
+                // MARK: Hero
+                heroSection
 
-                    // MARK: Benefits
-                    benefitsSection
-                        .padding(.top, EHSpacing.xxxl)
+                // MARK: Benefits
+                benefitsSection
+                    .padding(.top, EHSpacing.xxxl)
 
-                    // MARK: Human Control
-                    humanControlSection
-                        .padding(.top, EHSpacing.sectionSpacing)
+                // MARK: Human Control
+                humanControlSection
+                    .padding(.top, EHSpacing.sectionSpacing)
 
-                    // MARK: CTAs
-                    ctaSection
-                        .padding(.top, EHSpacing.xxxl)
-                        .padding(.bottom, EHSpacing.section)
-                }
+                // MARK: CTAs
+                ctaSection
+                    .padding(.top, EHSpacing.xxxl)
+                    .padding(.bottom, EHSpacing.section)
             }
-            .background(EHColors.page)
-            .navigationBarHidden(true)
-            .navigationDestination(isPresented: $navigateToLogin) {
-                LoginView()
-            }
-            .navigationDestination(isPresented: $navigateToSignup) {
-                SignupView()
-            }
-            #if DEBUG
-            .navigationDestination(isPresented: $navigateToDemo) {
-                Text("Demo Mode")
-                    .onAppear {
-                        Task {
-                            await appState.signIn(email: "ben@example.com", password: "demo")
-                            navigateToDemo = false
-                        }
-                    }
-            }
-            #endif
+        }
+        .background(EHColors.page)
+        .navigationBarHidden(true)
+        .navigationDestination(isPresented: $navigateToLogin) {
+            LoginView()
+        }
+        .navigationDestination(isPresented: $navigateToSignup) {
+            SignupView()
         }
     }
 
@@ -160,13 +147,22 @@ struct LandingView: View {
             EHSecondaryButton("Sign In") {
                 navigateToLogin = true
             }
+
+            // Debug-only: jump straight into the Ben/Alex demo session.
+            // This CTA is never compiled into Release builds.
             #if DEBUG
-            Button("Explore Demo") {
-                Task { await appState.signIn(email: "ben@example.com", password: "demo") }
+            EHPrimaryButton("Explore Demo", isLoading: isDemoLoading) {
+                Task {
+                    isDemoLoading = true
+                    await appState.loadDemoSession()
+                    isDemoLoading = false
+                }
             }
-            .font(EHTypography.bodySm)
-            .foregroundStyle(EHColors.Text.muted)
             .padding(.top, EHSpacing.xs)
+
+            Text("Demo mode · Debug build only")
+                .font(EHTypography.caption)
+                .foregroundStyle(EHColors.Text.subtle)
             #endif
         }
         .padding(.horizontal, EHSpacing.screenHorizontal)

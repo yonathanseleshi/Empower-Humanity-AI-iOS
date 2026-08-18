@@ -3,10 +3,12 @@ import SwiftUI
 struct AccessStatusView: View {
     @Environment(AppState.self) private var appState
     private let accessService = AccessService.shared
+    @State private var isDemoLoading = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: EHSpacing.xl) {
+
                 // Header
                 VStack(spacing: EHSpacing.md) {
                     CoIntelligenceOrb(state: .waiting, size: 72)
@@ -56,12 +58,40 @@ struct AccessStatusView: View {
                     .padding(EHSpacing.cardPaddingLg)
                     .ehCard(level: 1)
                 }
+
+                // Debug: jump into full demo without going back to Landing
+                #if DEBUG
+                VStack(spacing: EHSpacing.xs) {
+                    EHDivider()
+                        .padding(.vertical, EHSpacing.sm)
+                    Text("DEVELOPMENT ONLY")
+                        .font(EHTypography.label)
+                        .foregroundStyle(EHColors.Text.subtle)
+                        .tracking(1.5)
+                    EHPrimaryButton("Continue with Ben & Alex Demo", isLoading: isDemoLoading) {
+                        Task {
+                            isDemoLoading = true
+                            await appState.loadDemoSession()
+                            isDemoLoading = false
+                        }
+                    }
+                }
+                #endif
+
+                // Sign out
+                Button("Sign out") {
+                    appState.signOut()
+                }
+                .font(EHTypography.bodySm)
+                .foregroundStyle(EHColors.Text.muted)
+                .padding(.bottom, EHSpacing.sm)
             }
             .padding(.horizontal, EHSpacing.screenHorizontal)
             .padding(.bottom, EHSpacing.section)
         }
         .background(EHColors.page)
         .navigationTitle("Access")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             accessService.updateTier(appState.accessTier)
         }
